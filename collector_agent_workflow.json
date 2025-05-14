@@ -1,0 +1,120 @@
+{
+  "name": "Collector Agent Information Discovery Workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1",
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Input processing and context analysis\nconst input = $input.item.json;\nreturn {\n  informationObjectives: input.objectives,\n  domainParameters: input.domain,\n  priorityFactors: input.priorities\n};"
+      },
+      "id": "2",
+      "name": "Input Processor",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{$node[\"Input Processor\"].json[\"domainParameters\"].apiEndpoint}}",
+        "options": {}
+      },
+      "id": "3",
+      "name": "Data Collection",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Pattern recognition and analysis\nconst data = $input.item.json;\nreturn {\n  patterns: analyzePatterns(data),\n  insights: extractInsights(data),\n  confidence: calculateConfidence(data)\n};"
+      },
+      "id": "4",
+      "name": "Pattern Analyzer",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Output formatting and validation\nconst analysis = $input.item.json;\nreturn {\n  summary: generateSummary(analysis),\n  recommendations: generateRecommendations(analysis),\n  confidence: analysis.confidence\n};"
+      },
+      "id": "5",
+      "name": "Output Formatter",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Input Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Processor": {
+      "main": [
+        [
+          {
+            "node": "Data Collection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Collection": {
+      "main": [
+        [
+          {
+            "node": "Pattern Analyzer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pattern Analyzer": {
+      "main": [
+        [
+          {
+            "node": "Output Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": [
+    {
+      "name": "information-discovery",
+      "color": "#ff0000"
+    },
+    {
+      "name": "pattern-analysis",
+      "color": "#00ff00"
+    },
+    {
+      "name": "data-processing",
+      "color": "#0000ff"
+    }
+  ]
+} 
